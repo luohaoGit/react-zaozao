@@ -2,10 +2,10 @@
 "use strict";
 
 import React from 'react';
-import './page.less';
+import './index.less';
 
-export default class Page extends React.Component {
-    render() {
+export default React.createClass({
+    render: function() {
         const {spacing, className, children} = this.props;
 
         return (
@@ -16,4 +16,4 @@ export default class Page extends React.Component {
             </section>
         );
     }
-};
+});

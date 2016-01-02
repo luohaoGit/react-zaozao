@@ -5,20 +5,20 @@
 "use strict";
 
 import React from 'react';
-import {Link} from 'react-router';
-import Page from '../../../component/page/page';
+import * as actions from '../../action';
+import PureRenderMixin from 'react-addons-pure-render-mixin';
+import {connect} from 'react-redux';
+import Page from '../page/index';
 import {Cells, Cell, CellHeader, CellBody, CellFooter} from 'react-weui';
-
-let appStore = require('../../store');
 
 import './index.less';
 
-export default class Home extends React.Component {
+export const Home = React.createClass({
 
-    state = appStore.data().get("home")
+    mixins: [PureRenderMixin],
 
     _renderItem(components) {
-        return (components.toSeq().map(function(v, k) {
+        return (components.map(function(v, k) {
             let component = v.toJS()
             let header = ''
             let footer = <div>{component.val}</div>
@@ -38,28 +38,41 @@ export default class Home extends React.Component {
                     {footer}
                 </Cell>
             );
-        }, this).toList().toJS())
-    }
+        }, this))
+    },
 
     render() {
         return (
             <Page className="home">
                 <Cells access>
                     {
-                        this._renderItem(this.state.get("components0"))
+                        this._renderItem(this.props.components0)
                     }
                 </Cells>
                 <Cells access>
                     {
-                        this._renderItem(this.state.get("components1"))
+                        this._renderItem(this.props.components1)
                     }
                 </Cells>
                 <Cells access>
                     {
-                        this._renderItem(this.state.get("components2"))
+                        this._renderItem(this.props.components2)
                     }
                 </Cells>
             </Page>
         );
     }
-};
+});
+
+function mapStateToProps(state) {
+    return {
+        components0: state.getIn(['home', 'components0']),
+        components1: state.getIn(['home', 'components1']),
+        components2: state.getIn(['home', 'components2'])
+    };
+}
+
+export const HomePage = connect(
+    mapStateToProps,
+    actions
+)(Home);
