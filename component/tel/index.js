@@ -27,11 +27,38 @@ export const Tel = React.createClass({
         this.props.setSec(val)
     },
 
-    isDisabled() {
-        if(/^(13|14|15|17|18)\d{9}$/.test(this.props.telephone) && this.props.secCode.length == 6){
+    _isDisabled() {
+        if(this._isTelValid() && this.props.secCode.length == 6){
             return true;
         }
         return false;
+    },
+
+    _isTelValid() {
+        return /^(13|14|15|17|18)\d{9}$/.test(this.props.telephone)
+    },
+
+    _secHtml() {
+        return this.props.secCountDown == 0 ? "发送验证码" : this.props.secCountDown;
+    },
+
+    _sendSecCode() {
+        if(this.props.secCountDown == 0){
+            this.props.setCountDown(120)
+        }
+    },
+
+    _tick() {
+        if(this.props.secCountDown > 0){
+            this.props.setCountDown(this.props.secCountDown - 1)
+        }
+    },
+
+    componentDidMount() {
+        this.interval = setInterval(this._tick, 1000);
+    },
+    componentWillUnmount() {
+        clearInterval(this.interval);
     },
 
     render() {
@@ -54,12 +81,13 @@ export const Tel = React.createClass({
                                    onChange={this._onSecChange}
                                    className="weui_input"
                                    maxLength="6" type="tel" placeholder="请输入验证码"/>
-                            <div className="security sec-hidden"></div>
+                            <div onClick={this._sendSecCode}
+                                className={`security ${this._isTelValid() ? '' : 'sec-hidden'}`}>{this._secHtml()}</div>
                         </div>
                     </Cell>
                 </Cells>
                 <ButtonArea>
-                    <Button className={this.isDisabled() ? "" : "weui_btn_disabled"}>确定</Button>
+                    <Button className={this._isDisabled() ? "" : "weui_btn_disabled"}>确定</Button>
                 </ButtonArea>
             </Page>
         );
@@ -70,7 +98,8 @@ function mapStateToProps(state) {
     return {
         openid: state.getIn(['tel', 'openid']),
         telephone: state.getIn(['tel', 'telephone']),
-        secCode: state.getIn(['tel', 'secCode'])
+        secCode: state.getIn(['tel', 'secCode']),
+        secCountDown: state.getIn(['tel', 'secCountDown'])
     };
 }
 

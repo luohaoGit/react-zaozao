@@ -32,3 +32,16 @@ export function setSec(sec) {
     sec
   };
 }
+
+export function setCountDown(second) {
+  return {
+    type: 'SET_COUNT_DOWN',
+    second
+  };
+}
+
+export function submitCarNumber() {
+  return {
+    type: 'SUBMIT_CAR_NO'
+  };
+}

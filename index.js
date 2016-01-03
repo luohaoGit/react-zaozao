@@ -9,6 +9,7 @@ import {CarPage} from './component/car/index';
 import {TelPage} from './component/tel/index';
 import immutable from 'immutable';
 import 'weui';
+import 'isomorphic-fetch'
 
 const d = globalData;
 const store = createStore(reducer, immutable.fromJS({
@@ -48,7 +49,8 @@ const store = createStore(reducer, immutable.fromJS({
     tel: {
         openid: d.id,
         telephone: d.telephone,
-        secCode: ''
+        secCode: '',
+        secCountDown: 0
     }
 }));
 

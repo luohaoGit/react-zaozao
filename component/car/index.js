@@ -30,8 +30,24 @@ export const Car = React.createClass({
         this.props.setCarNumber(val)
     },
 
-    isDisabled() {
+    _isValid() {
         return this.props.carNumber.length == 5;
+    },
+
+    _submit() {
+        if(this._isValid()){
+            let carNumber = this.props.area + this.props.letter + this.props.carNumber;
+            fetch('/weixin/h5/carnumber.json?carNumber=' + carNumber)
+                .then(function(response) {
+                    if (response.status >= 400) {
+                        alert("Bad response from server");
+                    }
+                    return response.json();
+                })
+                .then(function(stories) {
+                    console.log(stories);
+                });
+        }
     },
 
     render() {
@@ -64,7 +80,8 @@ export const Car = React.createClass({
                     </Cell>
                 </Cells>
                 <ButtonArea>
-                    <Button className={this.isDisabled() ? "" : "weui_btn_disabled"}>确定</Button>
+                    <Button onClick={this._submit}
+                        className={this._isValid() ? "" : "weui_btn_disabled"}>确定</Button>
                 </ButtonArea>
             </Page>
         );
