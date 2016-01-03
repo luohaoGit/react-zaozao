@@ -2,7 +2,7 @@
 var webpack = require('webpack');
 var path = require('path');
 var OpenBrowserPlugin = require('open-browser-webpack-plugin');
-var dev = false;
+var dev = true;
 
 var entry = [
     path.resolve(__dirname, 'index.js')

@@ -9,13 +9,36 @@ import PureRenderMixin from 'react-addons-pure-render-mixin';
 import * as actions from '../../action';
 import Page from '../../component/page/index';
 import {connect} from 'react-redux';
-import {Cells, Cell, CellsTitle, Button, ButtonArea} from 'react-weui';
+import {Cells, Cell, CellsTitle, Button, ButtonArea, Dialog} from 'react-weui';
 
 import './index.less';
+
+const {Alert} = Dialog;
 
 export const Car = React.createClass({
 
     mixins: [PureRenderMixin],
+
+    getInitialState() {
+        return {
+            alertMsg: '',
+            showAlert: false,
+            alertButtons: [{
+                type: 'default',
+                label: '好的',
+                onClick: this._hideAlert.bind(this)
+            }]
+        }
+    },
+
+    _showAlert(msg) {
+        this.setState({alertMsg: msg});
+        this.setState({showAlert: true});
+    },
+
+    _hideAlert() {
+        this.setState({showAlert: false});
+    },
 
     _onSelectArea(e) {
         this.props.setArea(e.target.value)
@@ -37,16 +60,17 @@ export const Car = React.createClass({
     _submit() {
         if(this._isValid()){
             let carNumber = this.props.area + this.props.letter + this.props.carNumber;
+            let showAlert = this._showAlert;
             fetch('/weixin/h5/carnumber.json?carNumber=' + carNumber)
                 .then(function(response) {
                     if (response.status >= 400) {
-                        alert("Bad response from server");
+                        showAlert("网络错误");
                     }
                     return response.json();
                 })
                 .then(function(data) {
                     if (data.count == 1) {
-                        dialog("车牌已被绑定");
+                        showAlert("车牌已被绑定");
                     } else {
 
                     }
@@ -87,6 +111,9 @@ export const Car = React.createClass({
                     <Button onClick={this._submit}
                         className={this._isValid() ? "" : "weui_btn_disabled"}>确定</Button>
                 </ButtonArea>
+                <Alert title="早早移车" buttons={this.state.alertButtons} show={this.state.showAlert}>
+                    {this.state.alertMsg}
+                </Alert>
             </Page>
         );
     }
