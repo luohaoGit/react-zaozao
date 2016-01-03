@@ -10,7 +10,7 @@ var entry = [
 var plugins = [
     new webpack.optimize.UglifyJsPlugin({
         sourceMap: false,
-        mangle: false
+        mangle: true
     })
 ]
 

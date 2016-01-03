@@ -6,6 +6,7 @@
 
     "scripts": {
         "start": "webpack-dev-server --devtool eval --progress --hot --colors --content-base ./"
+        //"start": "webpack"
     },
 
     "keywords": [
