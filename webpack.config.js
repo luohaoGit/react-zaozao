@@ -2,13 +2,25 @@
 var webpack = require('webpack');
 var path = require('path');
 var OpenBrowserPlugin = require('open-browser-webpack-plugin');
+var dev = false;
+
+var entry = [
+    path.resolve(__dirname, 'index.js')
+];
+var plugins = [
+    new webpack.optimize.UglifyJsPlugin({
+        sourceMap: false,
+        mangle: false
+    })
+]
+
+if(dev){
+    entry = entry.concat(['webpack/hot/dev-server', 'webpack-dev-server/client?http://localhost:8080']);
+    plugins = plugins.concat([new webpack.HotModuleReplacementPlugin(), new OpenBrowserPlugin({ url: 'http://localhost:8080' })]);
+}
 
 module.exports = {
-    entry: [
-        'webpack/hot/dev-server',
-        'webpack-dev-server/client?http://localhost:8080',
-        path.resolve(__dirname, 'index.js')
-    ],
+    entry: entry,
     output: {
         path: path.resolve(__dirname, './'),
         publicPath: '/',
@@ -32,12 +44,5 @@ module.exports = {
             }
         ]
     },
-    plugins: [
-        new webpack.HotModuleReplacementPlugin(),
-        new webpack.optimize.UglifyJsPlugin({
-            sourceMap: false,
-            mangle: false
-        }),
-        new OpenBrowserPlugin({ url: 'http://localhost:8080' })
-    ]
+    plugins: plugins
 };
