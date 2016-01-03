@@ -44,8 +44,12 @@ export const Car = React.createClass({
                     }
                     return response.json();
                 })
-                .then(function(stories) {
-                    console.log(stories);
+                .then(function(data) {
+                    if (data.count == 1) {
+                        dialog("车牌已被绑定");
+                    } else {
+
+                    }
                 });
         }
     },
