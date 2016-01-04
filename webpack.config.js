@@ -1,11 +1,10 @@
 
 var webpack = require('webpack');
-var path = require('path');
 var OpenBrowserPlugin = require('open-browser-webpack-plugin');
-var dev = true;
+var dev = false;
 
 var entry = [
-    path.resolve(__dirname, 'index.js')
+    './index.js'
 ];
 var plugins = [
     new webpack.optimize.UglifyJsPlugin({
@@ -22,7 +21,7 @@ if(dev){
 module.exports = {
     entry: entry,
     output: {
-        path: path.resolve(__dirname, './'),
+        path: './',
         publicPath: '/',
         filename: './bundle.js'
     },

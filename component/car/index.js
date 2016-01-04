@@ -26,7 +26,7 @@ export const Car = React.createClass({
             alertButtons: [{
                 type: 'default',
                 label: '好的',
-                onClick: this._hideAlert.bind(this)
+                onClick: this._hideAlert
             }]
         }
     },

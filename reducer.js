@@ -1,4 +1,4 @@
-import {List, Map} from 'immutable';
+import {Map} from 'immutable';
 
 export default function(state = Map(), action) {
   switch (action.type) {

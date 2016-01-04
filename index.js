@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Router, {Route} from 'react-router';
-import {createStore, applyMiddleware} from 'redux';
+import {createStore} from 'redux';
 import {Provider} from 'react-redux';
 import reducer from './reducer';
 import {HomePage} from './component/home/index';
